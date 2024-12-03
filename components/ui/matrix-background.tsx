@@ -10,7 +10,7 @@ export function MatrixBackground() {
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!canvas || !ctx) return;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -25,8 +25,12 @@ export function MatrixBackground() {
     }
 
     function draw() {
+      if (!ctx) return;
+
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (canvas) {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
 
       ctx.fillStyle = "#0066FF";
       ctx.font = `${fontSize}px monospace`;
@@ -35,7 +39,7 @@ export function MatrixBackground() {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (canvas && drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i]++;
